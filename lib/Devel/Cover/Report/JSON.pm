@@ -14,7 +14,7 @@
 # The latest version of this software should be available from my homepage:
 # http://www.pjcj.net
 
-package Devel::Cover::Report::Compilation;
+package Devel::Cover::Report::JSON;
 
 use strict;
 use warnings;
