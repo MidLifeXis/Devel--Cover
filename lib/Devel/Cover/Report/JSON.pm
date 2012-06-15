@@ -25,11 +25,13 @@ use Devel::Cover::DB;
 
 # TODO - uncoverable code?
 
-sub print_statement
+sub findStatements
 {
     my ($db, $file, $options) = @_;
 
     my $statements = $db->cover->file($file)->statement or return;
+
+    my @statementInformation;
 
     for my $location ($statements->items)
     {
@@ -37,9 +39,11 @@ sub print_statement
         for my $statement (@$l)
         {
             next if $statement->covered;
-            print "Uncovered statement at $file line $location:\n";
+            push @statementInformation { file => $file, line => $location };
         }
     }
+
+    return \@statementInformation
 }
 
 sub print_branches
