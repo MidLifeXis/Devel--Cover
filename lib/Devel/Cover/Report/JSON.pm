@@ -46,11 +46,13 @@ sub findStatements
     return \@statementInformation
 }
 
-sub print_branches
+sub findBranches
 {
     my ($db, $file, $options) = @_;
 
     my $branches = $db->cover->file($file)->branch or return;
+
+    my @branchInformation;
 
     for my $location (sort { $a <=> $b } $branches->items)
     {
@@ -70,11 +72,18 @@ sub print_branches
             my ($t, $f) = map $b->covered($_),
                 $text =~ s/^(if|unless) // && $1 eq "unless" ? (1, 0) : (0, 1);
             # TODO - uncoverable code?
-            print "Branch never ",
-                $t ? ($f ? "???" : "false") : ($f ? "true" : "reached"),
-                " at $file line $location: $text\n";
+            push @branchInformation, {
+                file => $file,
+                line => $location,
+                what => join( " ",
+                              "Branch never",
+                              $t ? ($f ? "???" : "false") : ($f ? "true" : "reached"),
+                    ),
+            }
         }
     }
+
+    return \@branchInformation;
 }
 
 sub print_conditions
