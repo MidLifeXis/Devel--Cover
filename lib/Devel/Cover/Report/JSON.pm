@@ -3,11 +3,12 @@
 # This software is free.  It is licensed under the same terms as Perl itself.
 
 # ############################################################################ #
-# 2006-09-14 Denis Howe
-# Cloned from 0.59 Text.pm and hacked to give a minimal output in a
-# format similar to that output by Perl itself so that it's easier to
-# step through the untested locations with Emacs compilation mode
-# Copyright assigned to Paul Johnson
+# 2012-06-15 B. Wightman
+# Cloned from 0.89 Compilation.pm and hacked to give a minimal output in a
+# JSON format similar to that used by the rcov-overlay.el module (found at
+# http://emacswiki.org/emacs/rcov-overlay.el).  This output is used by the
+# package (https://github.com/MidLifeXis/emacs-perl-devel-cover-overlay).
+# Copyright for Devel::Cover::Report::JSON assigned to Paul Johnson
 # ############################################################################ #
 
 # The latest version of this software should be available from my homepage:
