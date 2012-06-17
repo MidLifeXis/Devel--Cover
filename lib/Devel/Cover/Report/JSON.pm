@@ -22,6 +22,7 @@ use warnings;
 # VERSION
 
 use Devel::Cover::DB;
+use JSON;
 
 # TODO - uncoverable code?
 
