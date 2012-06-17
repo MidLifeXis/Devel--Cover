@@ -45,7 +45,17 @@ BEGIN
 
 # $SIG{__DIE__} = \&Carp::confess;
 
-my $Initialised;                         # import() has been called.
+{
+    my $Initialised;                     # import() has been called.
+
+    sub _initialised {
+        return $Initialised
+    }
+
+    sub _set_initialised {
+        $Initialised = shift;
+    }
+}
 
 my $Dir;                                 # Directory in which coverage will be
                                          # collected.
@@ -182,7 +192,7 @@ if (0 && $Config{useithreads})
                    set_coverage(keys %Coverage);
                    my $ret = [ $sub->(@_) ];
                    print STDERR "Ending thread\n";
-                   report() if $Initialised;
+                   report() if _initialised;
                    print STDERR "Ended thread\n";
                    $wantarray ? @{$ret} : $ret->[0];
                },
@@ -194,7 +204,7 @@ if (0 && $Config{useithreads})
 {
     sub check
     {
-        return unless $Initialised;
+        return unless _initialised;
 
         check_files();
 
@@ -257,8 +267,8 @@ EOM
 
 sub last_end
 {
-    # print STDERR "**** END 2 - [$Initialised]\n";
-    report() if $Initialised;
+    # printf STDERR "**** END 2 - [%s]\n", _initialised();
+    report() if _initialised;
     # print STDERR "**** END 2 - ended\n";
 }
 
@@ -287,7 +297,7 @@ $Replace_ops = !$Self_cover;
 
 sub import
 {
-    return if $Initialised;
+    return if _initialised;
 
     my $class = shift;
 
@@ -387,7 +397,7 @@ sub import
     # print STDERR "Coverage: ", Dumper \%Coverage;
     %Coverage_options = %Coverage;
 
-    $Initialised = 1;
+    _set_initialised( 1 );
 
     if ($ENV{MOD_PERL})
     {
