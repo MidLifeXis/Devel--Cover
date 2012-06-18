@@ -49,3 +49,16 @@ plan tests => $testCount;
     BEGIN { $testCount += 1 }
 }
 
+{
+    my $savedInitialisedState = Devel::Cover::_initialised;
+
+    my $expected = 'foo';
+    Devel::Cover::_set_initialised( $expected );
+    
+    is( Devel::Cover::_initialised, $expected, '_initialised returns value passed in _set_initialised' );
+
+    Devel::Cover::_set_initialised( $savedInitialisedState );
+
+    BEGIN { $testCount += 1 }
+}
+
