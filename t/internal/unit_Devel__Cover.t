@@ -22,3 +22,30 @@ plan tests => $testCount;
 
     BEGIN { $testCount += 1 }
 }
+
+{
+    no warnings 'redefine';
+    my $calledReport = 0;
+    local *Devel::Cover::_initialised = sub { 1 };
+    local *Devel::Cover::report  = sub { $calledReport++ };
+
+    Devel::Cover::last_end;
+
+    is( $calledReport, 1, 'last_end calls report if initialised' );
+
+    BEGIN { $testCount += 1 }
+}
+
+{
+    no warnings 'redefine';
+    my $calledReport = 0;
+    local *Devel::Cover::_initialised = sub { undef };
+    local *Devel::Cover::report  = sub { $calledReport++ };
+
+    Devel::Cover::last_end;
+
+    is( $calledReport, 0, 'last_end does not call report if not initialised' );
+
+    BEGIN { $testCount += 1 }
+}
+
