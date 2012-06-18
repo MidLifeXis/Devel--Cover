@@ -54,7 +54,7 @@ plan tests => $testCount;
 
     my $expected = 'foo';
     Devel::Cover::_set_initialised( $expected );
-    
+
     is( Devel::Cover::_initialised, $expected, '_initialised returns value passed in _set_initialised' );
 
     Devel::Cover::_set_initialised( $savedInitialisedState );
@@ -81,4 +81,3 @@ plan tests => $testCount;
     is( $exitCalled, 1, 'CLONE calls exit' );
     BEGIN { $testCount += 1 }
 }
-
