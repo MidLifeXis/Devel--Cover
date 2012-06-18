@@ -18,7 +18,7 @@ plan tests => $testCount;
 
     my $success = ( $@ eq '' ) && ( ! defined $subReturn ) && ( $evalReturn == 1 );
 
-    ok( $success, 'check returns immediately if not initialized' );
+    ok( $success, 'check returns immediately if not initialised' );
 
     BEGIN { $testCount += 1 }
 }
