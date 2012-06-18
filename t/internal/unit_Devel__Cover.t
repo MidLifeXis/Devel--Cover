@@ -67,3 +67,18 @@ plan tests => $testCount;
     BEGIN { $testCount += 1 }
 }
 
+{
+    require POSIX;
+
+    my $exitCalled;
+
+    {
+        local *POSIX::_exit = sub { $exitCalled = 1};
+        local *CORE::print  = sub { };
+        Devel::Cover::CLONE;
+    }
+
+    is( $exitCalled, 1, 'CLONE calls exit' );
+    BEGIN { $testCount += 1 }
+}
+
