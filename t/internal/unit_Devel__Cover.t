@@ -62,3 +62,8 @@ plan tests => $testCount;
     BEGIN { $testCount += 1 }
 }
 
+{
+    is( Devel::Cover::version, $Devel::Cover::LVERSION, 'version returns value of $LVERSION' );
+    BEGIN { $testCount += 1 }
+}
+
