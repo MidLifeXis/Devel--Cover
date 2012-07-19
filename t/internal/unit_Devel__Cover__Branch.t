@@ -58,6 +58,18 @@ note( '...pad()' );
     BEGIN { $testCount += 1 }
 }
 
+note( '...percentage()' );
+{
+    my $pad = bless [], 'Devel::Cover::Branch';
+    Devel::Cover::Branch::pad( $pad );
+
+    explain( $pad );
+    my $expected = '  0';
+    my $actual   = Devel::Cover::Branch::percentage( $pad );
+    is( $expected, $actual, "percentage given fresh data returns 0" );
+    BEGIN { $testCount += 1 }
+}
+    
 my @todoTests;
 BEGIN {
     @todoTests = qw(
@@ -68,7 +80,6 @@ BEGIN {
         values
         text
         criterion
-        percentage
         error
         calculate_summary
     );
