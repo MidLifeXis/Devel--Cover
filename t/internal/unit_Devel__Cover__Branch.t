@@ -9,10 +9,58 @@ plan tests => $testCount;
 
 note( 'Starting unit tests for Devel::Cover::Branch' );
 
+note( '...pad()' );
+{
+    my $pad = [];
+    Devel::Cover::Branch::pad( $pad );
+    ok( $pad &&
+        ref( $pad ) &&
+        ref( $pad ) eq 'ARRAY' &&
+        $pad->[0] &&
+        ref( $pad->[0] ) &&
+        ref( $pad->[0] ) eq 'ARRAY' &&
+        $pad->[0][0] == 0 &&
+        $pad->[0][1] == 0,
+        'pad given empty arrayref returns properly initialized data',
+        );
+    BEGIN { $testCount += 1 }
+}
+
+{
+    my $pad = [[]];
+    Devel::Cover::Branch::pad( $pad );
+    ok( $pad &&
+        ref( $pad ) &&
+        ref( $pad ) eq 'ARRAY' &&
+        $pad->[0] &&
+        ref( $pad->[0] ) &&
+        ref( $pad->[0] ) eq 'ARRAY' &&
+        $pad->[0][0] == 0 &&
+        $pad->[0][1] == 0,
+        'pad given arrayref where element 0 is an empty arrayref returns properly initialized data',
+        );
+    BEGIN { $testCount += 1 }
+}
+
+{
+    my $pad = [[1,1]];
+    Devel::Cover::Branch::pad( $pad );
+    ok( $pad &&
+        ref( $pad ) &&
+        ref( $pad ) eq 'ARRAY' &&
+        $pad->[0] &&
+        ref( $pad->[0] ) &&
+        ref( $pad->[0] ) eq 'ARRAY' &&
+        $pad->[0][0] == 1 &&
+        $pad->[0][1] == 1,
+        'pad given arrayref where element 0 is already set returns properly initialized data',
+        );
+    BEGIN { $testCount += 1 }
+}
+
 my @todoTests;
 BEGIN {
     @todoTests = qw(
-        pad
         uncoverable
         coveed
         total
