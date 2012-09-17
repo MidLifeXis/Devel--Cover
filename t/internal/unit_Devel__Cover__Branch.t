@@ -69,7 +69,18 @@ note( '...percentage()' );
     is( $expected, $actual, "percentage given fresh data returns 0" );
     BEGIN { $testCount += 1 }
 }
-    
+
+{
+    my $pad = bless [], 'Devel::Cover::Branch';
+    Devel::Cover::Branch::pad( $pad );
+
+    explain( $pad );
+    my $expected = '  0';
+    my $actual   = Devel::Cover::Branch::percentage( $pad );
+    is( $expected, $actual, "percentage given fresh data returns 0" );
+    BEGIN { $testCount += 1 }
+}
+
 my @todoTests;
 BEGIN {
     @todoTests = qw(
