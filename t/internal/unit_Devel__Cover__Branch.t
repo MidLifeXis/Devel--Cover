@@ -58,6 +58,18 @@ note( '...pad()' );
     BEGIN { $testCount += 1 }
 }
 
+note( '...criterion()' );
+{
+    my $pad = bless [], 'Devel::Cover::Branch';
+    Devel::Cover::Branch::pad( $pad );
+
+    my $expected = 'branch';
+    my $actual   = Devel::Cover::Branch::criterion( $pad );
+    is( $expected, $actual, "criterion gives an expected value" )
+        or diag( "expected = '$expected', actual = '$actual'" );
+    BEGIN { $testCount += 1 }
+}
+
 note( '...percentage()' );
 {
     my $pad = bless [], 'Devel::Cover::Branch';
@@ -90,7 +102,6 @@ BEGIN {
         value
         values
         text
-        criterion
         error
         calculate_summary
     );
