@@ -1,0 +1,83 @@
+use strict;
+use warnings;
+
+use Test::More;
+b
+use Devel::Cover;
+
+my $testCount;
+plan tests => $testCount;
+
+{
+    no warnings 'redefine';
+    local *Devel::Cover::_initialised = sub { undef };
+    local *Devel::Cover::check_files  = sub { die "Made it past the return" };
+
+    my $subReturn;
+    my $evalReturn = eval { $subReturn = Devel::Cover::check; 1; };
+
+    my $success = ( $@ eq '' ) && ( ! defined $subReturn ) && ( $evalReturn == 1 );
+
+    ok( $success, 'check returns immediately if not initialised' );
+
+    BEGIN { $testCount += 1 }
+}
+
+{
+    no warnings 'redefine';
+    my $calledReport = 0;
+    local *Devel::Cover::_initialised = sub { 1 };
+    local *Devel::Cover::report  = sub { $calledReport++ };
+
+    Devel::Cover::last_end;
+
+    is( $calledReport, 1, 'last_end calls report if initialised' );
+
+    BEGIN { $testCount += 1 }
+}
+
+{
+    no warnings 'redefine';
+    my $calledReport = 0;
+    local *Devel::Cover::_initialised = sub { undef };
+    local *Devel::Cover::report  = sub { $calledReport++ };
+
+    Devel::Cover::last_end;
+
+    is( $calledReport, 0, 'last_end does not call report if not initialised' );
+
+    BEGIN { $testCount += 1 }
+}
+
+{
+    my $savedInitialisedState = Devel::Cover::_initialised;
+
+    my $expected = 'foo';
+    Devel::Cover::_set_initialised( $expected );
+
+    is( Devel::Cover::_initialised, $expected, '_initialised returns value passed in _set_initialised' );
+
+    Devel::Cover::_set_initialised( $savedInitialisedState );
+
+    BEGIN { $testCount += 1 }
+}
+
+{
+    is( Devel::Cover::version, $Devel::Cover::LVERSION, 'version returns value of $LVERSION' );
+    BEGIN { $testCount += 1 }
+}
+
+{
+    require POSIX;
+
+    my $exitCalled;
+
+    {
+        local *POSIX::_exit = sub { $exitCalled = 1};
+        local *CORE::print  = sub { };
+        Devel::Cover::CLONE;
+    }
+
+    is( $exitCalled, 1, 'CLONE calls exit' );
+    BEGIN { $testCount += 1 }
+}
